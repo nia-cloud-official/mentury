@@ -2,9 +2,10 @@
 
 import * as z from "zod"
 import axios from "axios"
+import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 // UI components
 import { Button } from "@/components/ui/button"
@@ -18,8 +19,8 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import Link from "next/link"
 import { Alert } from "@/components/alert"
+import toast from "react-hot-toast"
 
 const formSchema = z.object({
     title: z.string().min(1, {
@@ -28,6 +29,7 @@ const formSchema = z.object({
 })
 
 export default function CreatePage() {
+    const router = useRouter()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -39,10 +41,17 @@ export default function CreatePage() {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            // TODO: Add course creation logic with the API calls
             const response = await axios.post("/api/course", values)
+            router.push(`/teacher/courses/${response.data.id}`)
         } catch (error) {
-            console.log(error)
+            toast.error("Something went wrong. Please try again.", { 
+                icon: "🚨", 
+                duration: 5000,
+                style: {
+                    background: "#000",
+                    color: "red"
+                } 
+            })
         }
     }
 
@@ -52,7 +61,7 @@ export default function CreatePage() {
                 <h1 className="text-2xl">
                     Name your course
                 </h1>
-                <p className="text-neutral-600">
+                <p className="text-neutral-600 text-sm">
                     Give your course a name to get started.
                 </p>
                 <Form {...form}>
@@ -78,7 +87,9 @@ export default function CreatePage() {
                                     <FormDescription>
                                         What will you teach in this course?
                                         <Alert variant="tip" className="mt-2">
-                                            If you want to change the title later, you can do so in the course settings.
+                                            <p>
+                                                If you want to change the title later, you can do so in the course settings.
+                                            </p>
                                         </Alert>
                                     </FormDescription>
                                 </FormItem>
@@ -90,13 +101,15 @@ export default function CreatePage() {
                                     Cancel
                                 </Button>
                             </Link>
-                            <Button 
-                                variant="outline" 
-                                type="submit"
-                                disabled={!isValid || isSubmitting}
-                            >
-                                Continue
-                            </Button>
+                            <div>
+                                <Button
+                                    variant="outline"
+                                    type="submit"
+                                    disabled={!isValid || isSubmitting}
+                                >
+                                    Continue
+                                </Button>
+                            </div>
                         </div>
                     </form>
                 </Form>
