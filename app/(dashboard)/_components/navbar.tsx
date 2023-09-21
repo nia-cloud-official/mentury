@@ -6,7 +6,7 @@ import { UserAvatar } from "./user/user-avatar"
 export const Navbar = async () => {
     const session = await getAuthSession()
     return (
-        <div className="p-4 h-full flex items-center backdrop-blur-md shadow-sm">
+        <div className="p-4 h-full flex items-center backdrop-blur-md shadow-sm border-b border-neutral-900">
             <MobileSidebar />
             <NavbarRoutes />
         </div>
