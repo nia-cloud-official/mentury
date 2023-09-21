@@ -1,5 +1,7 @@
 export default function SearchPage() {
     return (
-        <p>Search page</p>
+        <div>
+            <h1>Search Page</h1>
+        </div>
     )
 }
