@@ -19,7 +19,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Alert } from "@/components/alert"
+
 import toast from "react-hot-toast"
 
 const formSchema = z.object({
@@ -41,22 +41,32 @@ export default function CreatePage() {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const response = await axios.post("/api/course", values)
+            const response = await axios.post("/api/courses", values)
             router.push(`/teacher/courses/${response.data.id}`)
-        } catch (error) {
-            toast.error("Something went wrong. Please try again.", { 
-                icon: "🚨", 
+            toast.success("Course created!", {
+                icon: "👏",
                 duration: 5000,
                 style: {
-                    background: "#000",
-                    color: "red"
-                } 
+                    background: "#10b98160",
+                    color: "#fff",
+                    border: "1px solid #10b981",
+                }
+            })
+        } catch (error) {
+            toast.error("Something went wrong. Please try again.", {
+                icon: "🚨",
+                duration: 5000,
+                style: { 
+                    background: "#ff261760", 
+                    color: "#ccc", 
+                    border: "1px solid #ff2617",
+                }
             })
         }
     }
 
     return (
-        <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
+        <div className="max-w-5xl mx-auto flex md:items-center md:justify-center p-6 mt-10">
             <div>
                 <h1 className="text-2xl">
                     Name your course
@@ -84,32 +94,25 @@ export default function CreatePage() {
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormDescription>
+                                    <FormDescription className="text-xs">
                                         What will you teach in this course?
-                                        <Alert variant="tip" className="mt-2">
-                                            <p>
-                                                If you want to change the title later, you can do so in the course settings.
-                                            </p>
-                                        </Alert>
                                     </FormDescription>
                                 </FormItem>
                             )}
-                        />   
+                        />
                         <div className="flex items-center gap-x-2">
                             <Link href="/">
-                                <Button variant="destructive">
+                                <Button variant="ghost">
                                     Cancel
                                 </Button>
                             </Link>
-                            <div>
-                                <Button
-                                    variant="outline"
-                                    type="submit"
-                                    disabled={!isValid || isSubmitting}
-                                >
-                                    Continue
-                                </Button>
-                            </div>
+                            <Button
+                                variant="outline"
+                                type="submit"
+                                disabled={!isValid || isSubmitting}
+                            >
+                                Continue
+                            </Button>
                         </div>
                     </form>
                 </Form>
