@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useUser } from "@clerk/nextjs"
+import { useUser, useClerk } from "@clerk/nextjs"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,9 +9,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
+import { LogOut } from "lucide-react"
 
 export const UserNavigation = () => {
     const { isLoaded, isSignedIn, user } = useUser()
+    const { signOut } = useClerk()
     if (!isLoaded || !isSignedIn) return null
     return (
         <DropdownMenu>
@@ -39,6 +41,17 @@ export const UserNavigation = () => {
                         )}
                     </div>
                 </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                    onSelect={(event) => {
+                        event.preventDefault()
+                        signOut()
+                    }}
+                    className="text-red-600 cursor-pointer"
+                >
+                    Log out
+                    <LogOut className="w-4 h-4 ml-2" />
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )
