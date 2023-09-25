@@ -75,6 +75,4 @@
   }
 }
 
-.prose a {
-  @apply text-blue-600 no-underline;
-}
+@import "~@uploadthing/react/styles.css"
