@@ -81,6 +81,9 @@ export default async function CourseIdPage({
                                 Course chapters
                             </h2> 
                         </div>
+                        <div>
+                            TODO: Chapters section must be added here.
+                        </div>
                     </div>
                 </div>
             </div>
