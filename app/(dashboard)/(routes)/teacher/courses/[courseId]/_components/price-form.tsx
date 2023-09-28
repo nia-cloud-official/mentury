@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea"
 
 import { Course } from "@prisma/client"
 import { Input } from "@/components/ui/input"
+import { formatPrice } from "@/lib/format-price"
 
 interface PriceFormProps {
     initialData: Course
@@ -100,9 +101,13 @@ export const PriceForm = ({
             {!isEditing && (
                 <p className={cn(
                     "text-sm mt-2",
-                    !initialData.price && 'text-purple-500'
+                    'text-purple-500'
                 )}>
-                    {initialData.price || "Free course"}
+                    { 
+                        initialData.price 
+                        ? formatPrice(initialData.price)
+                        : "Free course"
+                    }
                 </p>
             )}
             {isEditing && (
